@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maestro AI</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background-color: #111;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    h1 {
+      font-size: 2.2rem;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    select, textarea, button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+      margin-top: 2rem;
+    }
+    .output {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Maestro AI</h1>
+    <p>Compose Emotionally. Elegantly. Instantly.</p>
+  </header>
+
+  <div class="container">
+    <label for="mood">Select Mood:</label>
+    <select id="mood">
+      <option value="melancholy">Melancholy</option>
+      <option value="hopeful">Hopeful</option>
+      <option value="introspective">Introspective</option>
+      <option value="majestic">Majestic</option>
+    </select>
+
+    <label for="length">Select Length:</label>
+    <select id="length">
+      <option value="8">8 bars</option>
+      <option value="16">16 bars</option>
+      <option value="32">32 bars</option>
+    </select>
+
+    <label for="style">Harmony Style:</label>
+    <select id="style">
+      <option value="classical">Classical Rules</option>
+      <option value="gabriele">Gabriele's Rules (Contemporary)</option>
+    </select>
+
+    <label for="prompt">Optional Scene / Prompt:</label>
+    <textarea id="prompt" rows="4" placeholder="e.g. 'A woman alone at a train station at night'..."></textarea>
+
+    <button onclick="compose()">Compose</button>
+
+    <div class="output">
+      <h3>🎼 Generated Score Preview</h3>
+      <p><em>This is where the score image or preview will appear.</em></p>
+      <h3>🎧 Audio Playback</h3>
+      <p><em>This is where the MP3 audio will be embedded.</em></p>
+    </div>
+  </div>
+
+  <script>
+    function compose() {
+      alert("Maestro AI is composing your melody... (placeholder for back-end trigger)");
+    }
+  </script>
+</body>
+</html>
