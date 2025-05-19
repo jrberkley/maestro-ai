@@ -135,7 +135,7 @@
           prompt: document.getElementById("prompt").value,
         };
 
-        const response = await fetch("https://your-backend-url.onrender.com/api/generate", {
+        const response = await fetch("https://maestro-backend.onrender.com/api/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
@@ -160,4 +160,3 @@
 
 </body>
 </html>
-
