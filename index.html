@@ -3,61 +3,161 @@
 <head>
   <meta charset="UTF-8" />
   <title>Maestro AI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+
+    p.subtitle {
+      margin-top: 5px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      margin: 40px auto;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+
+    select, input, textarea, button {
+      display: block;
+      width: 100%;
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #111;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    pre {
+      background: #f0f0f0;
+      padding: 10px;
+      text-align: left;
+      max-width: 500px;
+      margin: 20px auto;
+      white-space: pre-wrap;
+      border-radius: 6px;
+    }
+
+    .section-label {
+      text-align: left;
+      font-weight: bold;
+      margin-top: 25px;
+    }
+
+    .gray-note {
+      color: #555;
+      font-style: italic;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Maestro AI 🎹</h1>
-  <button id="generateBtn">Generate Melody</button>
-  <pre id="output"></pre>
 
-  <!-- Tone.js library -->
+  <header>
+    <h1>Maestro AI</h1>
+    <p class="subtitle">Compose Emotionally. Elegantly. Instantly.</p>
+  </header>
+
+  <div class="form-container">
+    <label for="mood">Select Mood:</label>
+    <select id="mood">
+      <option>Melancholy</option>
+      <option>Hopeful</option>
+      <option>Dramatic</option>
+      <option>Peaceful</option>
+    </select>
+
+    <label for="length">Select Length:</label>
+    <select id="length">
+      <option>4 bars</option>
+      <option selected>8 bars</option>
+      <option>16 bars</option>
+    </select>
+
+    <label for="style">Harmony Style:</label>
+    <select id="style">
+      <option>Classical Rules</option>
+      <option>Jazz Harmony</option>
+      <option>Modern Minimalism</option>
+    </select>
+
+    <label for="prompt">Optional Scene / Prompt:</label>
+    <input id="prompt" placeholder="e.g. 'A woman alone at a train station at night'..." />
+
+    <button onclick="generateMelody()">Compose</button>
+
+    <div class="section-label">🎼 Generated Score Preview</div>
+    <p class="gray-note">This is where the score image or preview will appear.</p>
+
+    <div class="section-label">🎧 Audio Playback</div>
+    <p class="gray-note">This is where the MP3 audio will be embedded.</p>
+
+    <pre id="output"></pre>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.39/Tone.js"></script>
-
   <script>
-    document.getElementById("generateBtn").onclick = async () => {
+    async function generateMelody() {
       try {
-        // Use your deployed backend URL below instead of localhost
+        const body = {
+          mood: document.getElementById("mood").value,
+          length: document.getElementById("length").value,
+          style: document.getElementById("style").value,
+          prompt: document.getElementById("prompt").value,
+        };
+
         const response = await fetch("https://your-backend-url.onrender.com/api/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ harmonyData: ["C", "F", "G", "Am"] })
+          body: JSON.stringify(body)
         });
 
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
         const data = await response.json();
-        document.getElementById("output").textContent = JSON.stringify(data.melody, null, 2);
-        console.log("🎼 Melody received:", data.melody);
+        document.getElementById("output").textContent = JSON.stringify(data.melody || data, null, 2);
 
-        // Start Audio Context
         await Tone.start();
-
-        // PolySynth for flexible playback
-        const synth = new Tone.PolySynth(Tone.Synth, {
-          oscillator: { type: "triangle" },
-          envelope: {
-            attack: 0.1,
-            decay: 0.2,
-            sustain: 0.4,
-            release: 1
-          }
-        }).toDestination();
-
-        // Optional: Add reverb for warmth
-        const reverb = new Tone.Reverb({ decay: 2 }).toDestination();
-        synth.connect(reverb);
-
-        // Play notes
+        const synth = new Tone.PolySynth(Tone.Synth).toDestination();
         let now = Tone.now();
-        data.melody.forEach(note => {
+        (data.melody || []).forEach(note => {
           synth.triggerAttackRelease(note.note, note.duration, now);
           now += note.duration;
         });
-
-      } catch (error) {
-        console.error("Error:", error);
-        document.getElementById("output").textContent = `Error: ${error.message}`;
+      } catch (err) {
+        console.error(err);
+        document.getElementById("output").textContent = `Error: ${err.message}`;
       }
-    };
+    }
   </script>
+
 </body>
 </html>
+
